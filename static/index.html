@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
-
   <head>
-    <title>Python Flask Starter Application</title>
+    <title>NLP-twitter-aggregator</title>
+    <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://css-spinners.com/css/spinner/spinner.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <style type="text/css">
         .topiccols { height: 70vh }
-        .headerrow { height: 15vh; margin-top: 5%; }
+        .headerrow { height: 19.9vh; margin-top: 5%; }
         .list-group-item.slidefade {
            opacity: 0;
            transform: translateY(75%); 
@@ -24,85 +25,146 @@
         .list-group-item.rowhead { background-color: rgb(80,0,0); border: 1px solid black;  }
         .list-group-item.rowhead:hover { background-color: rgb(80,70,70); border:1px solid black; }
         .list-group-item.rowhead:active { background-color: rgb(80,70,70); border:1px solid black; }
+        #errormsg { 
+            padding: 8px;
+            margin-top: 50px;
+            //max-width: 100px;
+            background-color: rgb(236,80,80); 
+            opacity:0 
+        }
+        body {
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+11,eeeeee+61,eeeeee+61,55acee+99 */
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(255,255,255,1) 11%, rgba(238,238,238,1) 61%, rgba(238,238,238,1) 61%, rgba(85,172,238,1) 99%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(11%,rgba(255,255,255,1)), color-stop(61%,rgba(238,238,238,1)), color-stop(61%,rgba(238,238,238,1)), color-stop(99%,rgba(85,172,238,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 11%,rgba(238,238,238,1) 61%,rgba(238,238,238,1) 61%,rgba(85,172,238,1) 99%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(255,255,255,1) 11%,rgba(238,238,238,1) 61%,rgba(238,238,238,1) 61%,rgba(85,172,238,1) 99%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(255,255,255,1) 11%,rgba(238,238,238,1) 61%,rgba(238,238,238,1) 61%,rgba(85,172,238,1) 99%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(255,255,255,1) 11%,rgba(238,238,238,1) 61%,rgba(238,238,238,1) 61%,rgba(85,172,238,1) 99%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#55acee',GradientType=0 ); /* IE6-9 */
+    }
     </style>
   </head>
-
   <body>
 <div class="container-fluid">
 	<div class="row headerrow">
-		<div class="col-md-4">
+		<div class="col-md-3">
+
         </div>
-		<div class="col-md-4">
-            Input your Twitter handle, yo
+
+		<div class="col-md-6">
             <div class="row">
-                <div class="col-md-8">
-                    <input class="form-control" id="twitterHandle" value="billcosby"></input>
+                <h2 class="text-center"> Welcome to the NLP Twitter Aggregator!  </h2>
+                <BR><BR>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-4 text-center">
+                    <span>Enter your Twitter handle</span>
+                </div>
+                <div class="col-md-6">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
                 </div>
                 <div class="col-md-4">
-                    <button class="form-control" id="doTwitter">nailed it</button>
+                    <input class="form-control" id="twitterHandle" value=""></input>
+                </div>
+                <div class="col-md-3">
+                        <button class="form-control button" id="doTwitter">Go</button>
+                </div>
+                <div class="col-md-3">
                 </div>
             </div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
         </div>
 	</div>
+    <div class="row">
+		<div class="col-md-5">
+        </div>
+		<div class="col-md-2">
+            <center><div id="spinner" class="spinner-loader text-center" style="margin-top:50px; display:none">
+                Loading...
+            </div></center>
+        </div>
+		<div class="col-md-5">
+        </div>
+    </div>
+	<div class="row">
+		<div class="col-md-4">
+        </div>
+        <div class="col-md-4 text-center"><span id="errormsg" style="opacity: 0"></span></div>
+		<div class="col-md-4">
+        </div>
+    </div>
 	<div class="row topiccols">
 		<div class="col-md-4">
-			<div class="list-group topicA">
-				 <a href="#" class="list-group-item slidefade rowhead active">Topic A</a>
+			<div class="list-group topicA slidefade">
             </div>
 		</div>
 		<div class="col-md-4">
-			<div class="list-group topicB">
-				 <a href="#" class="list-group-item slidefade rowhead active">Topic B</a>
+			<div class="list-group topicB slidefade">
             </div>
 		</div>
 		<div class="col-md-4">
-			<div class="list-group topicC">
-				 <a href="#" class="rowhead list-group-item slidefade active">Topic C</a>
+			<div class="list-group topicC slidefade">
             </div>
 		</div>
 	</div>
 </div>
   </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/color/jquery.color-2.1.2.min.js"></script>
 <script>
 var t;
     // TODO: send request to Flask to run topic code
     function topicItem(art) {
         return $(document.createElement("div"))
             .addClass("list-group-item")
-            //.addClass("slidefade")
+            .addClass("slidefade")
             .html("<div class='row'><div class='col-md-2' >Topic:</div><div class='col-md-10'><a href='"+art.url+"'>"+art.text.substr(0,140)+"</a></div></div>") 
     }
 
     $(document).ready(function() {
         $("#doTwitter").click( function() {
+            $(".list-group-item").remove()
+            $("#spinner").show().animate({opacity:1})
             twit = $("#twitterHandle").val()
             console.log("trying to process"+ twit)
-            $.get('/?twitterHandle=' + twit ).then( function(r) { 
-                j = $.parseJSON(r); // a list of articles
-                colList = ['.topicA','.topicB','.topicC']
-                for (var k=0; k< j.length; k++) {
-                    if (j[k] == undefined) {
-                        continue
-                    }
-                    for (var i=0; i<Math.min(5,j[k].length); i++) {
-                        if ( j[k][i] == undefined ) {
+            $.ajax({
+                url: '/?twitterHandle=' + twit,
+                success: ( function(r) { 
+                    j = $.parseJSON(r); // a list of articles
+                    colList = ['.topicA','.topicB','.topicC']
+                    for (var k=0; k< j.length; k++) {
+                        if (j[k] == undefined) {
                             continue
                         }
-                        console.log( 'k='+k+', i='+i )
-                        console.log( j[k][i] )
-                        $( colList[k] ).append( topicItem( j[k][i] ) )
+                        for (var i=0; i<Math.min(5,j[k].length); i++) {
+                            if ( j[k][i] == undefined ) {
+                                continue
+                            }
+                            console.log( 'k='+k+', i='+i )
+                            console.log( j[k][i] )
+                            $( colList[k] ).append( topicItem( j[k][i] ) )
+                        }
                     }
-                }
-                $(".list-group-item:not(.rowhead)").click( function() {
-                   $(this).toggleClass("active") 
-                })       
-                t=r;
-                console.log(t) 
-            //    $(".list-group-item").toggleClass("slidefade")
-            }) 
+                    $(".list-group-item:not(.rowhead)").click( function() {
+                       $(this).toggleClass("active") 
+                    })       
+                    t=r;
+                    console.log(t) 
+                    $("#spinner").animate( { opacity: 0 }, 200 ).hide().css( {opacity: 1 } )
+                    $(".list-group-item").toggleClass("slidefade")
+                }),
+                error: ( function(r) { 
+                    $("#errormsg").text("An error occurred, try again.").show().animate( {opacity: 1}, 300 ).delay(800).animate({opacity:0}, 400)
+                    $("#spinner").animate( { opacity: 0 }, 200 )
+                }) 
+            })
         })
     });
 </script>

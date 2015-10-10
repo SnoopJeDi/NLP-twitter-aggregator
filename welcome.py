@@ -22,6 +22,10 @@ import prismatic
 
 app = Flask(__name__)
 
+@app.route('/images/<path:path>')
+def send_js(path):
+    return send_from_directory('images', path)
+
 @app.route('/')
 def Welcome():
     print(request.args)
