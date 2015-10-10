@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Python Flask Starter Application</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <style type="text/css">
+        .topiccols { height: 70vh }
+        .headerrow { height: 15vh; margin-top: 5%; }
+        .list-group-item.slidefade {
+           opacity: 0;
+           transform: translateY(75%); 
+        }
+        .list-group-item {
+            transition: opacity 300ms ease-in,
+                        transform 300ms ease-in-out;
+        }
+        .topicA .list-group-item { transition-delay: 0s }
+        .topicB .list-group-item { transition-delay: 75ms }
+        .topicC .list-group-item { transition-delay: 150ms }
+        .list-group-item.rowhead { background-color: rgb(80,0,0); border: 1px solid black;  }
+        .list-group-item.rowhead:hover { background-color: rgb(80,70,70); border:1px solid black; }
+        .list-group-item.rowhead:active { background-color: rgb(80,70,70); border:1px solid black; }
+    </style>
+  </head>
+
+  <body>
+<div class="container-fluid">
+	<div class="row headerrow">
+		<div class="col-md-4">
+        </div>
+		<div class="col-md-4">
+            Input your Twitter handle, yo
+            <div class="row">
+                <div class="col-md-8">
+                    <input class="form-control" id="twitterHandle" value="billcosby"></input>
+                </div>
+                <div class="col-md-4">
+                    <button class="form-control" id="doTwitter">nailed it</button>
+                </div>
+            </div>
+		</div>
+		<div class="col-md-4">
+        </div>
+	</div>
+	<div class="row topiccols">
+		<div class="col-md-4">
+			<div class="list-group topicA">
+				 <a href="#" class="list-group-item slidefade rowhead active">Topic A</a>
+            </div>
+		</div>
+		<div class="col-md-4">
+			<div class="list-group topicB">
+				 <a href="#" class="list-group-item slidefade rowhead active">Topic B</a>
+            </div>
+		</div>
+		<div class="col-md-4">
+			<div class="list-group topicC">
+				 <a href="#" class="rowhead list-group-item slidefade active">Topic C</a>
+            </div>
+		</div>
+	</div>
+</div>
+  </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+var t;
+    // TODO: send request to Flask to run topic code
+    function topicItem(art) {
+        return $(document.createElement("div"))
+            .addClass("list-group-item")
+            //.addClass("slidefade")
+            .html("<div class='row'><div class='col-md-2' >Topic:</div><div class='col-md-10'><a href='"+art.url+"'>"+art.text.substr(0,140)+"</a></div></div>") 
+    }
+
+    $(document).ready(function() {
+        $("#doTwitter").click( function() {
+            twit = $("#twitterHandle").val()
+            console.log("trying to process"+ twit)
+            $.get('/?twitterHandle=' + twit ).then( function(r) { 
+                j = $.parseJSON(r); // a list of articles
+                colList = ['.topicA','.topicB','.topicC']
+                for (var k=0; k< j.length; k++) {
+                    if (j[k] == undefined) {
+                        continue
+                    }
+                    for (var i=0; i<Math.min(5,j[k].length); i++) {
+                        if ( j[k][i] == undefined ) {
+                            continue
+                        }
+                        console.log( 'k='+k+', i='+i )
+                        console.log( j[k][i] )
+                        $( colList[k] ).append( topicItem( j[k][i] ) )
+                    }
+                }
+                $(".list-group-item:not(.rowhead)").click( function() {
+                   $(this).toggleClass("active") 
+                })       
+                t=r;
+                console.log(t) 
+            //    $(".list-group-item").toggleClass("slidefade")
+            }) 
+        })
+    });
+</script>
+</html>
