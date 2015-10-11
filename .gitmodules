@@ -1,0 +1,6 @@
+[submodule "alchemyapi_python"]
+	path = alchemyapi_python
+	url = https://github.com/AlchemyAPI/alchemyapi_python.git
+[submodule "requests"]
+	path = requests
+	url = git://github.com/kennethreitz/requests.git
