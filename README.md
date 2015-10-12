@@ -11,6 +11,8 @@ Content aggregator based on processing of Twitter using the Alchemy and Prismati
 
 3) Get a key from www.alchemyapi.com/api/register.html and put it in NLP-twitter-aggregator/api_key.txt
 
+4) Get a set of authentication keys for the Twitter API from [Twitter Application Management](https://apps.twitter.com/) and put them in the processFeed.py file (lines 88-91)
+
 4) Run the webserver: 
 > python aggregator.py
 
