@@ -85,10 +85,10 @@ def taxonomy(demo_text):
 
 
 def authenticate():
-    consumer_key = 'cqTR8J0ov4o5aYvSHAIH3efMS'
-    consumer_secret = 'z3hbtyBPwXBg7uBFOxtt8EuiLJlIv5v9HPH3feFBzA2Hn0UHon'
-    access_token = '41052160-F4hx1bkA3OCD3bLc0XqksfyWIh9DChaewG3g5vzXm'
-    access_token_secret = 'nHCbl0FAMZuqGtvFnkT6kXZaDRL2eNFdKuum1GcF5KjUQ'
+    consumer_key = 'Enter your consumer key from the Twitter API here'
+    consumer_secret = 'Enter your consumer secret from the Twitter API here'
+    access_token = 'Enter your accerss token from the Twitter API here'
+    access_token_secret = 'Enter your access token secret from the Twitter API here'
 
     auth = tp.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
